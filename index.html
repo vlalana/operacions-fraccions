@@ -187,6 +187,12 @@
     padding: 5px 8px; cursor: pointer; white-space: nowrap;
   }
   .check-btn:hover, .check-btn:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 1px; }
+  .clear-results-wrap { display: flex; justify-content: center; margin-top: 28px; }
+  .clear-results-btn {
+    border: 1px solid var(--line); border-radius: 7px; background: var(--accent-soft);
+    color: var(--ink); font: inherit; font-size: 14px; padding: 8px 14px; cursor: pointer;
+  }
+  .clear-results-btn:hover, .clear-results-btn:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 1px; }
   .op-grid .ff input.cell.is-correct { border: 2px solid #168447; background: #e5f4e9; }
   .op-grid .ff input.cell.is-incorrect { border: 2px solid #c53232; background: #fbe8e8; }
   .op-grid .ff input.cell.is-unsimplified { border: 2px solid #b77900 !important; background: #ffed9c !important; }
@@ -202,7 +208,7 @@
     body { background: #fff; font-size: 12.5pt; }
     .page { padding: 0; max-width: none; }
     .sheet { border: 0; padding: 0; border-radius: 0; }
-    .howto, .finish, .saved, .check-btn { display: none !important; }
+    .howto, .finish, .saved, .check-btn, .clear-results-wrap { display: none !important; }
     .q textarea { border: 1px solid #888; font-size: 12pt; }
     input.cell { border: 1px solid #888; }
     .opt { border: 1px solid #888; }
@@ -529,6 +535,10 @@
     </div>
   </section>
 
+  <div class="clear-results-wrap">
+    <button type="button" class="clear-results-btn" id="clear-results">Esborra tots els resultats</button>
+  </div>
+
 </div>
 </main>
 
@@ -603,6 +613,14 @@
   fields.concat(radios).forEach(function (el) {
     el.addEventListener("input", save);
     el.addEventListener("change", save);
+  });
+
+  document.getElementById("clear-results").addEventListener("click", function () {
+    document.querySelectorAll(".op-grid .ff input.cell").forEach(function (field) {
+      field.value = "";
+      field.classList.remove("is-correct", "is-incorrect", "is-unsimplified");
+    });
+    save();
   });
 
   /* ---------- comprovació independent del numerador i del denominador ---------- */
